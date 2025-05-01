@@ -10,7 +10,7 @@ pipeline {
         }
         stage('DeployToStage') {
             when {
-                branch 'master'
+                branch 'broken-feature'
             }
             steps {
                 withCredentials([string(credentialsId: 'cloud_user_pw', variable: 'USERPASS')]) {

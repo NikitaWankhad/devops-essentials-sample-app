@@ -8,33 +8,6 @@ pipeline {
                 archiveArtifacts artifacts: 'src/index.html'
             }
         }
-        stage('DeployToStage') {
-            when {
-                branch 'broken-feature'
-            }
-            steps {
-                withCredentials([string(credentialsId: 'cloud_user_pw', variable: 'USERPASS')]) {
-                    sshPublisher(
-                        failOnError: true,
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'staging',
-                                sshCredentials: [
-                                    username: 'cloud_user',
-                                    encryptedPassphrase: "$USERPASS"
-                                ], 
-                                transfers: [
-                                    sshTransfer(
-                                        sourceFiles: 'src/**',
-                                        removePrefix: 'src/'
-                                    )
-                                ]
-                            )
-                        ]
-                    )
-                }
-            }
-        }
         stage('DeployToProd') {
             when {
                 branch 'broken-feature'

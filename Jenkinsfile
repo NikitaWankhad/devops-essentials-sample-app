@@ -10,7 +10,7 @@ pipeline {
         }
         stage('DeployToStage') {
             when {
-                branch 'broken-feature'
+                branch 'master'
             }
             steps {
                 withCredentials([string(credentialsId: 'cloud_user_pw', variable: 'USERPASS')]) {
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('DeployToProd') {
             when {
-                branch 'broken-feature'
+                branch 'new-feature'
             }
             steps {
                 input 'Does the staging environment look OK?'

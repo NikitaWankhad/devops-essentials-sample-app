@@ -35,34 +35,5 @@ pipeline {
                 }
             }
         }
-        stage('DeployToProd') {
-            when {
-                branch 'new-feature'
-            }
-            steps {
-                input 'Does the staging environment look OK?'
-                milestone(1)
-                withCredentials([string(credentialsId: 'cloud_user_pw', variable: 'USERPASS')]) {
-                    sshPublisher(
-                        failOnError: true,
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: 'production',
-                                sshCredentials: [
-                                    username: 'cloud_user',
-                                    encryptedPassphrase: "$USERPASS"
-                                ], 
-                                transfers: [
-                                    sshTransfer(
-                                        sourceFiles: 'src/**',
-                                        removePrefix: 'src/'
-                                    )
-                                ]
-                            )
-                        ]
-                    )
-                }
-            }
-        }
     }
 }
